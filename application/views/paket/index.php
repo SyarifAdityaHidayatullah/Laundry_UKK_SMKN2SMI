@@ -5,7 +5,7 @@
     </form>
 </div>
 <div class="row">
-    <div class="col-8">
+    <div class="col-6">
         <div class="row">
             <!-- awal card -->
             <?php foreach ($paket as $p) : ?>
@@ -21,10 +21,10 @@
                             <h6 class="text-center"><?php echo 'Rp ' . number_format($p->harga, 0, '.', '.') ?></h6>
                             <div class="brand-card-body row">
                                 <div class="col-6">
-                                    <input type="number" name="qty" value="1" class="form-control">
+                                    <input type="number" name="qty" value="1" class="form-control" id="<?= $p->id_paket ?>">
                                 </div>
                                 <div class="col-6">
-                                    <button class="tambah_beli btn btn-success form-control" type="submit" data-namapaket="<?= $p->nama_paket ?>" data-idpaket="<?= $p->id_paket ?>" data-harga="<?= $p->harga ?>" data-qty="<?= $this->input->post('qty') ?>">Pesan</button>
+                                    <button class="tambah_beli btn btn-success form-control" type="submit" data-paketid="<?= $p->id_paket ?>" data-paketnama="<?= $p->nama_paket ?>" data-paketharga="<?= $p->harga ?>">Pesan</button>
                                 </div>
                             </div>
                         </div>
@@ -36,15 +36,15 @@
     <!-- akhir card -->
 
     <!-- awal keranjang -->
-    <div class="col-sm-4 mt-3">
-        <form action="<?= base_url() ?>" method="post"></form>
+    <div class="col-sm-6 mt-3">
+        <form action="<?= base_url('C_transaksi/transaksi') ?>" method="post"></form>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header ">
                     <div class="row">
                         <div class="col-lg-12">
 
-                            <h4>Table Keranjang</h4>
+                            <h4 class="text-center">Keranjang</h4>
                         </div>
                         <div class="card-body">
                             <table class="table table-responsive-sm">
@@ -76,23 +76,39 @@
 <script>
     $(document).ready(function() {
         $('.tambah_beli').click(function() {
-            var nama = $(this).data('namapaket');
-            var id = $(this).data('idpaket');
-            var harga_paket = $(this).data('hargapaket');
-            var qty = $(this).data('qty');
+            var id_paket = $(this).data('paketid');
+            var nama_paket = $(this).data('paketnama');
+            var harga = $(this).data('paketharga');
+            var qty = $('#' + id_paket).val();
             $.ajax({
-                url: "<?= base_url('paket/simpan_keranjang') ?>",
+                url: "<?= base_url('C_Paket/simpan_keranjang') ?>",
                 method: "POST",
                 data: {
-                    id_paket: id,
-                    nama_paket: nama,
-                    harga: harga_paket
+                    id_paket: id_paket,
+                    nama_paket: nama_paket,
+                    harga: harga,
+                    qty: qty,
                 },
                 success: function(data) {
                     $('#tampil_keranjang').html(data);
                 }
             });
-            $('#tampil_keranjang').load("<?= base_url('paket/load_keranjang') ?>");
+        });
+
+        $('#tampil_keranjang').load("<?= base_url() ?>C_Paket/load_keranjang");
+
+        $(document).on('click', '.hapus_cart', function() {
+            var row_id = $(this).attr("id");
+            $.ajax({
+                url: "<?php echo base_url('C_Paket/hapus_keranjang'); ?>",
+                method: "POST",
+                data: {
+                    row_id: row_id
+                },
+                success: function(data) {
+                    $('#tampil_keranjang').html(data);
+                }
+            });
         });
     });
 </script>

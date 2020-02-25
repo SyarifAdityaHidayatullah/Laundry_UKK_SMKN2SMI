@@ -133,7 +133,7 @@ class C_Paket extends CI_Controller
             'id' => $this->input->post('id_paket'),
             'name' => $this->input->post('nama_paket'),
             'price' => $this->input->post('harga'),
-            'qty' => $this->input->post('qty')
+            'qty' => $this->input->post('qty'),
         ];
         $this->cart->insert($data);
         echo $this->tampil_keranjang();
@@ -145,21 +145,32 @@ class C_Paket extends CI_Controller
     public function tampil_keranjang()
     {
         $output = '';
-        foreach ($this->cart->contents() as $i) {
+        foreach ($this->cart->contents() as $items) {
             $output .= '
                 <tr>
-                    <td><input type="hidden" value="' . $i['id'] . '" name="$id_paket[]">' . $i['name'] . '</td>
-                    <td>' . number_format($i['price']) . '</td>
-                    <td><input type="hidden" value="' . $i['qty'] . '" name="qty[]">' . $i['qty'] . '</td>
-                    <td>' . number_format($i['subtotal']) . '</td>
-                    <td><button type="button" id="' . $i['rowid'] . '" class="hapus_cart btn btn-danger btn-xs">Hapus</button></td>
+                    <td><input type="hidden" value="' . $items['id'] . '" name="$id_paket[]">' . $items['name'] . '</td>
+                    <td>' . number_format($items['price'], 0, '.', '.') . '</td>
+                    <td><input type="hidden" value="' . $items['qty'] . '" name="qty[]">' . $items['qty'] . '</td>
+                    <td>' . number_format($items['subtotal'], 0, '.', '.') . '</td>
+                    <td><button type="button" id="' . $items['rowid'] . '" class="hapus_cart btn btn-danger btn-xs">Hapus</button></td>
                 </tr>
-                <tr>
-                <th colspan="4">Total</th>
-                <th colspan="2"><input type=hidden value="' . $this->cart->total() . '" name="total">' . 'Rp ' . number_format($this->cart->total(), 0, '.', '.') . '</th>
-            </tr>
             ';
         }
+        $output .= '
+            <tr>
+                <th colspan="3">Total</th>
+                <th colspan="2"><input type=hidden value="' . $this->cart->total() . '" name="total">' . 'Rp ' . number_format($this->cart->total(), 0, '.', '.') . '</th>
+            </tr>
+        ';
         return $output;
+    }
+    public function hapus_keranjang()
+    {
+        $data = [
+            'rowid' => $this->input->post('row_id'),
+            'qty' => 0
+        ];
+        $this->cart->update($data);
+        echo $this->tampil_keranjang();
     }
 }
