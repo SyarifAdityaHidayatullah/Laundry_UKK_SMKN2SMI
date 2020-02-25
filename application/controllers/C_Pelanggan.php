@@ -34,6 +34,9 @@ class C_Pelanggan extends CI_Controller
         $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required', [
             'required' => 'harus diisi'
         ]);
+        $this->form_validation->set_rules('jk', 'Jk', 'trim|required', [
+            'required' => 'harus diisi'
+        ]);
         $this->form_validation->set_rules('no_hp', 'No_hp', 'trim|required|numeric', [
             'required' => 'harus diisi',
             'numeric' => 'harus diisi dengan angka'
@@ -45,14 +48,16 @@ class C_Pelanggan extends CI_Controller
             $this->load->view('pelanggan/formtambah', $data);
             $this->load->view('layout/footer');
         } else {
-            $nama = htmlspecialchars($this->input->post('nama'));
-            $alamat = htmlspecialchars($this->input->post('alamat'));
-            $no_hp = htmlspecialchars($this->input->post('no_hp'));
+            $nama = htmlspecialchars($this->input->post('nama', true), ENT_QUOTES);
+            $alamat = htmlspecialchars($this->input->post('alamat', true), ENT_QUOTES);
+            $no_hp = htmlspecialchars($this->input->post('no_hp', true), ENT_QUOTES);
+            $jk = htmlspecialchars($this->input->post('jk', true), ENT_QUOTES);
 
             $data = [
                 'nama' => $nama,
                 'alamat' => $alamat,
-                'no_hp' => $no_hp
+                'no_hp' => $no_hp,
+                'jk' => $jk
             ];
             $this->M_crud->tambahdata('pelanggan', $data);
             $this->session->set_flashdata('pesan', 'Data Berhasil Ditambah');
@@ -69,6 +74,9 @@ class C_Pelanggan extends CI_Controller
             'required' => 'harus diisi'
         ]);
         $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required', [
+            'required' => 'harus diisi'
+        ]);
+        $this->form_validation->set_rules('jk', 'Jk', 'trim|required', [
             'required' => 'harus diisi'
         ]);
         $this->form_validation->set_rules('no_hp', 'No_hp', 'trim|required|numeric', [
@@ -88,14 +96,16 @@ class C_Pelanggan extends CI_Controller
                 redirect('C_Pelanggan');
             }
         } else {
-            $nama = htmlspecialchars($this->input->post('nama'));
-            $alamat = htmlspecialchars($this->input->post('alamat'));
-            $no_hp = htmlspecialchars($this->input->post('no_hp'));
+            $nama = htmlspecialchars($this->input->post('nama', true), ENT_QUOTES);
+            $alamat = htmlspecialchars($this->input->post('alamat', true), ENT_QUOTES);
+            $no_hp = htmlspecialchars($this->input->post('no_hp', true), ENT_QUOTES);
+            $jk = htmlspecialchars($this->input->post('jk', true), ENT_QUOTES);
 
             $data = [
                 'nama' => $nama,
                 'alamat' => $alamat,
-                'no_hp' => $no_hp
+                'no_hp' => $no_hp,
+                'jk' => $jk
             ];
             $this->M_crud->editdata('pelanggan', 'id_pelanggan', $id, $data);
             $this->session->set_flashdata('pesan', 'Data Berhasil Diedit');

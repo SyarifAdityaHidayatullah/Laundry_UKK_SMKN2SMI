@@ -1,9 +1,11 @@
+<script src="<?= base_url('assets/datatables/jquery.dataTables.js') ?>"></script>
+<script src="<?= base_url('assets/datatables/dataTables.bootstrap4.min.js') ?>"></script>
+<script scr="<?= base_url('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
 <script>
     $(document).ready(function() {
-        $('#dataTable').DataTable();
+        $('#data').DataTable();
     });
 </script>
-<script scr="<?= base_url('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
 </body>
 
 </html>

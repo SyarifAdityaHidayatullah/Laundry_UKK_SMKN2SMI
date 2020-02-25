@@ -1,12 +1,12 @@
 <div class="container">
     <h3 class="text-center mt-3"><?= $judul; ?></h3>
-    <a href="<?= base_url('C_User/formtambahuser') ?>" class="btn btn-success mt-3">Tambah</a>
+    <a href="<?= base_url('C_User/formtambahuser') ?>" class="btn btn-success mt-3 mb-3">Tambah</a>
     <?php if ($this->session->flashdata()) : ?>
         <div class="alert alert-success mt-3">
             <?= $this->session->flashdata('pesan'); ?>
         </div>
     <?php endif ?>
-    <table class="table table-bordered mt-3">
+    <table class="table table-bordered mt-3" id="data">
         <thead class="bg-info text-white">
             <tr>
                 <td>No</td>

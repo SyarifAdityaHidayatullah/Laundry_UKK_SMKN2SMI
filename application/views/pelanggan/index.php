@@ -6,11 +6,12 @@
             <?= $this->session->flashdata('pesan'); ?>
         </div>
     <?php endif ?>
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="data">
         <thead class="bg-info text-white">
             <tr>
                 <td>No</td>
                 <td>Nama</td>
+                <td>Jenis Kelamin</td>
                 <td>Alamat</td>
                 <td>No HP</td>
                 <td>Aksi</td>
@@ -23,6 +24,7 @@
             <tr>
                 <td><?= $no++; ?></td>
                 <td><?= $p->nama; ?></td>
+                <td><?= $p->jk; ?></td>
                 <td><?= $p->alamat; ?></td>
                 <td><?= $p->no_hp; ?></td>
                 <td>

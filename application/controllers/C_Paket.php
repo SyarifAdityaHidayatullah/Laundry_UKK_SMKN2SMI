@@ -126,4 +126,40 @@ class C_Paket extends CI_Controller
         $this->session->set_flashdata('pesan', 'Data Berhasil Dihapus');
         redirect('C_Paket/tampil');
     }
+    // keranjang
+    public function simpan_keranjang()
+    {
+        $data = [
+            'id' => $this->input->post('id_paket'),
+            'name' => $this->input->post('nama_paket'),
+            'price' => $this->input->post('harga'),
+            'qty' => $this->input->post('qty')
+        ];
+        $this->cart->insert($data);
+        echo $this->tampil_keranjang();
+    }
+    public function load_keranjang()
+    {
+        echo $this->tampil_keranjang();
+    }
+    public function tampil_keranjang()
+    {
+        $output = '';
+        foreach ($this->cart->contents() as $i) {
+            $output .= '
+                <tr>
+                    <td><input type="hidden" value="' . $i['id'] . '" name="$id_paket[]">' . $i['name'] . '</td>
+                    <td>' . number_format($i['price']) . '</td>
+                    <td><input type="hidden" value="' . $i['qty'] . '" name="qty[]">' . $i['qty'] . '</td>
+                    <td>' . number_format($i['subtotal']) . '</td>
+                    <td><button type="button" id="' . $i['rowid'] . '" class="hapus_cart btn btn-danger btn-xs">Hapus</button></td>
+                </tr>
+                <tr>
+                <th colspan="4">Total</th>
+                <th colspan="2"><input type=hidden value="' . $this->cart->total() . '" name="total">' . 'Rp ' . number_format($this->cart->total(), 0, '.', '.') . '</th>
+            </tr>
+            ';
+        }
+        return $output;
+    }
 }

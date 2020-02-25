@@ -23,8 +23,8 @@ class C_auth extends CI_Controller
 		if ($this->form_validation->run() == FALSE) {
 			$this->load->view('v_index');
 		} else {
-			$username = htmlspecialchars($this->input->post('username'));
-			$password = htmlspecialchars($this->input->post('password'));
+			$username = htmlspecialchars($this->input->post('username', true), ENT_QUOTES);
+			$password = htmlspecialchars($this->input->post('password', true), ENT_QUOTES);
 
 			$u = $this->db->get_where('user', ['username' => $username])->row();
 			if ($u) {

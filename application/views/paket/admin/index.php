@@ -1,12 +1,12 @@
 <div class="container">
     <h3 class="text-center mt-3"><?= $judul; ?></h3>
-    <a href="<?= base_url('C_Paket/formtambahpaket') ?>" class="btn btn-success mt-3">Tambah</a>
+    <a href="<?= base_url('C_Paket/formtambahpaket') ?>" class="btn btn-success mt-3 mb-3">Tambah</a>
     <?php if ($this->session->flashdata()) : ?>
         <div class="alert alert-success mt-3">
             <?= $this->session->flashdata('pesan'); ?>
         </div>
     <?php endif ?>
-    <table class="table table-bordered mt-3">
+    <table class="table table-bordered" id="data">
         <thead class="bg-info text-white">
             <tr>
                 <td>No</td>
@@ -20,8 +20,7 @@
         <?php
         $no = 1;
         foreach ($paket as $p) :
-            if ($p->id_outlet) :
-        ?>
+            if ($p->id_outlet) : ?>
                 <tr>
                     <td><?= $no++; ?></td>
                     <td><?= $p->nama_paket; ?></td>
