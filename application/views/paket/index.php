@@ -1,11 +1,12 @@
 <div class="mt-3 ml-3">
     <form class="form-inline my-2 my-lg-0" action="" method="POST">
-        <input type="search" placeholder="cari paket" class="form-control mr-sm-2">
+        <input type="hidden" name="<?= csrf()['name'] ?>" value="<?= csrf()['hash'] ?>">
+        <input type="search" placeholder="cari paket" class="form-control mr-sm-2 col-5">
         <button class="btn btn-primary" type="submit">Cari</button>
     </form>
 </div>
 <div class="row">
-    <div class="col-6">
+    <div class="col-lg-6">
         <div class="row">
             <!-- awal card -->
             <?php foreach ($paket as $p) : ?>
@@ -37,36 +38,56 @@
 
     <!-- awal keranjang -->
     <div class="col-sm-6 mt-3">
-        <form action="<?= base_url('C_transaksi/transaksi') ?>" method="post"></form>
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header ">
-                    <div class="row">
-                        <div class="col-lg-12">
+        <form action="<?= base_url('C_transaksi/transaksi') ?>" method="post">
+            <input type="hidden" name="<?= csrf()['name'] ?>" value="<?= csrf()['hash'] ?>">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header ">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 class="text-center">Keranjang</h4>
+                                <input type="hidden" name="id">
+                                <div class="form-group">
+                                    <label for="name"><b>Nama Pelanggan </b><span class="text-danger">*</span></label>
+                                    <input type="text" name="nama" class="form-control" id="auto">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name"><b>Diskon </b><span class="text-danger">*</span></label>
+                                    <input type="number" name="diskon" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name"><b>Pajak </b><span class="text-danger">*</span></label>
+                                    <input type="number" name="pajak" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name"><b>Status Pembayaran </b><span class="text-danger">*</span></label>
+                                    <select name="status_pembayaran" class="form-control">
+                                        <option value="belum_bayar">belum dibayar</option>
+                                        <option value="dibayar">dibayar</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-responsive-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Paket</th>
+                                            <th>Harga</th>
+                                            <th>Jumlah</th>
+                                            <th>Sub Total</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tampil_keranjang">
 
-                            <h4 class="text-center">Keranjang</h4>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-responsive-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Nama Paket</th>
-                                        <th>Harga</th>
-                                        <th>Jumlah</th>
-                                        <th>Sub Total</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tampil_keranjang">
-
-                                </tbody>
-                            </table>
-                            <button type="submit" class="btn btn-success">Simpan</button>
+                                    </tbody>
+                                </table>
+                                <button type="submit" class="btn btn-success">Simpan</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         </form>
 
     </div>
@@ -109,6 +130,13 @@
                     $('#tampil_keranjang').html(data);
                 }
             });
+        });
+        $('#auto').autocomplete({
+            source: "<?= base_url('C_Paket/autocomplete') ?>",
+            select: function(event, ui) {
+                $('[name="nama"]').val(ui.item.nama);
+                $('[name="id"]').val(ui.item.id);
+            }
         });
     });
 </script>

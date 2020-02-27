@@ -173,4 +173,18 @@ class C_Paket extends CI_Controller
         $this->cart->update($data);
         echo $this->tampil_keranjang();
     }
+    public function autocomplete()
+    {
+        if (isset($_GET['term'])) {
+            $result = $this->M_crud->autocomplete($_GET['term']);
+            if (count($result) > 0) {
+                foreach ($result as $row)
+                    $arr_result[] = [
+                        'label' => $row->nama . '  -  ' . $row->alamat . ' - ' . $row->no_hp . ' - ' . $row->jk,
+                        'id' => $row->id_pelanggan
+                    ];
+                echo json_encode($arr_result);
+            }
+        }
+    }
 }

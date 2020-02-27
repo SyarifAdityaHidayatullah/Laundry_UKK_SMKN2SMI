@@ -43,4 +43,11 @@ class M_crud extends CI_Model
             ->get();
         return $query;
     }
+    public function autocomplete($title)
+    {
+        $this->db->like('nama', $title);
+        $this->db->or_like('alamat', $title);
+        $this->db->or_like('no_hp', $title);
+        return $this->db->get('pelanggan')->result();
+    }
 }
