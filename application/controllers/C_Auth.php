@@ -30,6 +30,7 @@ class C_auth extends CI_Controller
 			if ($u) {
 				if (password_verify($password, $u->password)) {
 					$data = [
+						'id_user' => $u->id_user,
 						'nama_user' => $u->nama_user,
 						'username' => $u->username,
 						'level' => $u->level,

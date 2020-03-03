@@ -13,8 +13,17 @@ class C_Laporan extends CI_Controller
     public function index()
     {
         $data['judul'] = 'Data Laporan';
+        $data['laporan'] = $this->M_crud->join4();
         $this->load->view('layout/header', $data);
         $this->load->view('laporan/index', $data);
+        $this->load->view('layout/footer');
+    }
+    public function detail($id)
+    {
+        $data['judul'] = 'Detail';
+        $data['detail'] = $this->M_crud->join3($id);
+        $this->load->view('layout/header', $data);
+        $this->load->view('laporan/detail', $data);
         $this->load->view('layout/footer');
     }
 }

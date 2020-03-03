@@ -148,9 +148,9 @@ class C_Paket extends CI_Controller
         foreach ($this->cart->contents() as $items) {
             $output .= '
                 <tr>
-                    <td><input type="hidden" value="' . $items['id'] . '" name="$id_paket[]">' . $items['name'] . '</td>
+                    <td><input type="hidden" value="' . $items['id'] . '" name="id_paket[]">' . $items['name'] . '</td>
                     <td>' . number_format($items['price'], 0, '.', '.') . '</td>
-                    <td><input type="hidden" value="' . $items['qty'] . '" name="qty[]">' . $items['qty'] . '</td>
+                    <td><input type="hidden" value="' . $items['qty'] . '"name="qty[]">' . $items['qty'] . '</td>
                     <td>' . number_format($items['subtotal'], 0, '.', '.') . '</td>
                     <td><button type="button" id="' . $items['rowid'] . '" class="hapus_cart btn btn-danger btn-xs">Hapus</button></td>
                 </tr>

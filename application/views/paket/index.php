@@ -1,4 +1,9 @@
 <div class="mt-3 ml-3">
+    <?php if ($this->session->flashdata()) : ?>
+        <div class="alert alert-danger mt-3">
+            <?= $this->session->flashdata('pesan'); ?>
+        </div>
+    <?php endif ?>
     <form class="form-inline my-2 my-lg-0" action="" method="POST">
         <input type="hidden" name="<?= csrf()['name'] ?>" value="<?= csrf()['hash'] ?>">
         <input type="search" placeholder="cari paket" class="form-control mr-sm-2 col-5">
@@ -11,6 +16,7 @@
             <!-- awal card -->
             <?php foreach ($paket as $p) : ?>
                 <?php if ($p->id_outlet) : ?>
+                    <!-- <input type="hidden" name="id_paket" value="<?= $p->id_paket ?>"> -->
                     <div class="col-sm-6">
                         <div class="card mt-3 ml-2 mr-2">
                             <div class="brand-card-header bg-info">
@@ -46,25 +52,34 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h4 class="text-center">Keranjang</h4>
-                                <input type="hidden" name="id">
+                                <input type="hidden" name="id_pelanggan">
                                 <div class="form-group">
                                     <label for="name"><b>Nama Pelanggan </b><span class="text-danger">*</span></label>
                                     <input type="text" name="nama" class="form-control" id="auto">
+                                    <?= form_error('nama', '<div class="text-danger">', '</div>') ?>
                                 </div>
                                 <div class="form-group">
                                     <label for="name"><b>Diskon </b><span class="text-danger">*</span></label>
-                                    <input type="number" name="diskon" class="form-control">
+                                    <input type="number" name="diskon" class="form-control" value="0">
+                                    <?= form_error('diskon', '<div class="text-danger">', '</div>') ?>
                                 </div>
                                 <div class="form-group">
                                     <label for="name"><b>Pajak </b><span class="text-danger">*</span></label>
-                                    <input type="number" name="pajak" class="form-control">
+                                    <input type="number" name="pajak" class="form-control" value="0">
+                                    <?= form_error('pajak', '<div class="text-danger">', '</div>') ?>
                                 </div>
                                 <div class="form-group">
                                     <label for="name"><b>Status Pembayaran </b><span class="text-danger">*</span></label>
                                     <select name="status_pembayaran" class="form-control">
-                                        <option value="belum_bayar">belum dibayar</option>
+                                        <option value="belum_dibayar">belum dibayar</option>
                                         <option value="dibayar">dibayar</option>
                                     </select>
+                                    <?= form_error('status_pembayaran', '<div class="text-danger">', '</div>') ?>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name"><b>Keterangan </b><span class="text-danger">*</span></label>
+                                    <input type="text" name="ket" class="form-control" value="-">
+                                    <?= form_error('ket', '<div class="text-danger">', '</div>') ?>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -135,7 +150,7 @@
             source: "<?= base_url('C_Paket/autocomplete') ?>",
             select: function(event, ui) {
                 $('[name="nama"]').val(ui.item.nama);
-                $('[name="id"]').val(ui.item.id);
+                $('[name="id_pelanggan"]').val(ui.item.id);
             }
         });
     });

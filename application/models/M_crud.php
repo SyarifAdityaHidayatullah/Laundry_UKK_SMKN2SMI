@@ -33,15 +33,25 @@ class M_crud extends CI_Model
             ->get();
         return $query->result();
     }
-    public function tampiljoin_where($tableawal, $tablekedua, $idgabung, $idkey, $id)
+    public function join4()
     {
         $query = $this->db->select('*')
-            ->from($tableawal)
-            ->where($idkey, $id)
-            ->join($tablekedua, '' . $tableawal . '.' . $idgabung . '=' . $tablekedua . '.' . $idgabung . '', 'left')
-            // ->order_by($idutama, 'DESC')
+            ->from('transaksi')
+            ->join('pelanggan', 'pelanggan.id_pelanggan=transaksi.id_pelanggan', 'left')
+            ->join('user', 'user.id_user=transaksi.id_user', 'left')
+            ->join('outlet', 'outlet.id_outlet=transaksi.id_outlet', 'left')
             ->get();
-        return $query;
+        return $query->result();
+    }
+    public function join3($id)
+    {
+        $query = $this->db->select('*')
+            ->from('detail_transaksi')
+            ->where('id_transak', $id)
+            ->join('paket', 'paket.id_paket=detail_transaksi.id_paket', 'left')
+            ->join('transaksi', 'transaksi.id_transaksi=detail_transaksi.id_transak', 'left')
+            ->get();
+        return $query->result();
     }
     public function autocomplete($title)
     {

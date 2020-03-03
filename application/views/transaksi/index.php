@@ -16,23 +16,39 @@
                 <td>Outlet</td>
                 <td>Status Cucian</td>
                 <td>Status Pembayaran</td>
+                <td>Diskon</td>
+                <td>Pajak</td>
                 <td>Aksi</td>
             </tr>
         </thead>
-        <!-- <?php
-                $no = 1;
-                foreach ($outlet as $o) :
-                ?>
+        <?php
+        $no = 1;
+        foreach ($transaksi as $t) :
+        ?>
             <tr>
                 <td><?= $no++; ?></td>
-                <td><?= $o->nama_outlet; ?></td>
-                <td><?= $o->alamat_outlet; ?></td>
-                <td><?= $o->tlp; ?></td>
+                <td><?= $t->tgl; ?></td>
+                <td><?= $t->kode_invoice; ?></td>
+                <td><?= $t->nama; ?></td>
+                <td><?= $t->nama_user; ?></td>
+                <td><?= $t->nama_outlet; ?></td>
+                <td><?= $t->status; ?></td>
+                <?php if ($t->dibayar == 'belum_dibayar') : ?>
+                    <td>
+                        <a href="" class="badge badge-danger">Belum dibayar</a>
+                    </td>
+                <?php else : ?>
+                    <td>
+                        <a href="" class="badge badge-success">dibayar</a>
+                    </td>
+                <?php endif ?>
+                <td><?= $t->diskon; ?></td>
+                <td><?= $t->pajak; ?></td>
                 <td>
-                    <a href="<?= base_url('C_Outlet/formeditoutlet/' . $o->id_outlet) ?>" class="badge badge-primary">Edit</a>
-                    <a href="<?= base_url('C_Outlet/hapusoutlet/' . $o->id_outlet) ?>" onclick="return confirm('apa anda yakin? data dihapus?')" class="badge badge-danger">Hapus</a>
+                    <a href="<?= base_url('C_Outlet/formeditoutlet/' . $t->id_outlet) ?>" class="badge badge-primary">Edit</a>
+                    <a href="<?= base_url('C_Outlet/hapusoutlet/' . $t->id_outlet) ?>" onclick="return confirm('apa anda yakin? data dihapus?')" class="badge badge-danger">Hapus</a>
                 </td>
             </tr>
-        <?php endforeach ?> -->
+        <?php endforeach ?>
     </table>
 </div>

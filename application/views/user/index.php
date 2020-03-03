@@ -11,7 +11,6 @@
             <tr>
                 <td>No</td>
                 <td>Nama</td>
-                <td>Username</td>
                 <td>Level</td>
                 <td>Nama Outlet</td>
                 <td>Aksi</td>
@@ -25,7 +24,6 @@
                 <tr>
                     <td><?= $no++; ?></td>
                     <td><?= $u->nama_user; ?></td>
-                    <td><?= $u->username; ?></td>
                     <td><?= $u->level; ?></td>
                     <td><?= $u->nama_outlet; ?></td>
                     <td>
