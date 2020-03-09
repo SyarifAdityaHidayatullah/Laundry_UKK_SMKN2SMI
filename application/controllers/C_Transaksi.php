@@ -15,8 +15,12 @@ class C_Transaksi extends CI_Controller
     }
     public function index()
     {
-        $data['judul'] = 'Data Transaksi';
-        $data['transaksi'] = $this->M_crud->join4();
+        $data['judul'] = 'Transaksi';
+        if ($this->session->userdata('level') == 'admin') {
+            $data['paket'] = $this->M_crud->tampildata('paket');
+        } else {
+            $data['paket'] = $this->db->get_where('paket', ['id_outlet' => $this->session->userdata('id_outlet')])->result();
+        }
         $this->load->view('layout/header', $data);
         $this->load->view('transaksi/index', $data);
         $this->load->view('layout/footer');
@@ -48,7 +52,7 @@ class C_Transaksi extends CI_Controller
                 $data['paket'] = $this->db->get_where('paket', ['id_outlet' => $this->session->userdata('id_outlet')])->result();
             }
             $this->load->view('layout/header', $data);
-            $this->load->view('paket/index', $data);
+            $this->load->view('transaksi/index', $data);
             $this->load->view('layout/footer');
         } else {
             $pelanggan = htmlspecialchars($this->input->post('id_pelanggan'));
@@ -63,7 +67,7 @@ class C_Transaksi extends CI_Controller
 
                 $trs = [
                     'id_transaksi' => 'TRS' . date('dmyhis'),
-                    'id_outlet' => $this->session->userdata('id_outlet'),
+                    'outlet_id' => $this->session->userdata('id_outlet'),
                     'id_pelanggan' => $pelanggan,
                     'id_user' => $this->session->userdata('id_user'),
                     'kode_invoice' => 'LNRY' . date('dmyhis'),
@@ -77,7 +81,7 @@ class C_Transaksi extends CI_Controller
                 $dtrs = [];
                 foreach ($id_paket as $key => $value) {
                     $dtrs[] = [
-                        'id_transak' => 'TRS' . date('dmyhis'),
+                        'transaksi_id' => 'TRS' . date('dmyhis'),
                         'id_paket' => $_POST['id_paket'][$key],
                         'qty' => $_POST['qty'][$key],
                         'keterangan' => $ket
@@ -86,10 +90,72 @@ class C_Transaksi extends CI_Controller
                 $this->db->insert_batch('detail_transaksi', $dtrs);
                 $this->cart->destroy();
                 $this->session->set_flashdata('pesan', 'Data Berhasil Ditambah');
-                redirect('C_transaksi');
+                redirect('C_Laporan');
             } else {
                 $this->session->set_flashdata('pesan', 'Paket tidak ada di keranjang');
                 redirect('C_paket');
+            }
+        }
+    }
+
+    // keranjang
+    public function simpan_keranjang()
+    {
+        $data = [
+            'id' => $this->input->post('id_paket'),
+            'name' => $this->input->post('nama_paket'),
+            'price' => $this->input->post('harga'),
+            'qty' => $this->input->post('qty'),
+        ];
+        $this->cart->insert($data);
+        echo $this->tampil_keranjang();
+    }
+    public function load_keranjang()
+    {
+        echo $this->tampil_keranjang();
+    }
+    public function tampil_keranjang()
+    {
+        $output = '';
+        foreach ($this->cart->contents() as $items) {
+            $output .= '
+                <tr>
+                    <td><input type="hidden" value="' . $items['id'] . '" name="id_paket[]">' . $items['name'] . '</td>
+                    <td>' . number_format($items['price'], 0, '.', '.') . '</td>
+                    <td><input type="hidden" value="' . $items['qty'] . '"name="qty[]">' . $items['qty'] . '</td>
+                    <td>' . number_format($items['subtotal'], 0, '.', '.') . '</td>
+                    <td><button type="button" id="' . $items['rowid'] . '" class="hapus_cart btn btn-danger btn-xs">Hapus</button></td>
+                </tr>
+            ';
+        }
+        $output .= '
+            <tr>
+                <th colspan="3">Total</th>
+                <th colspan="2"><input type=hidden value="' . $this->cart->total() . '" name="total">' . 'Rp ' . number_format($this->cart->total(), 0, '.', '.') . '</th>
+            </tr>
+        ';
+        return $output;
+    }
+    public function hapus_keranjang()
+    {
+        $data = [
+            'rowid' => $this->input->post('row_id'),
+            'qty' => 0
+        ];
+        $this->cart->update($data);
+        echo $this->tampil_keranjang();
+    }
+    public function autocomplete()
+    {
+        if (isset($_GET['term'])) {
+            $result = $this->M_crud->autocomplete($_GET['term']);
+            if (count($result) > 0) {
+                foreach ($result as $row)
+                    $arr_result[] = [
+                        'label' => $row->nama . '  -  ' . $row->alamat . ' - ' . $row->no_hp . ' - ' . $row->jk,
+                        'id' => $row->id_pelanggan
+                    ];
+                echo json_encode($arr_result);
             }
         }
     }

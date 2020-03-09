@@ -29,9 +29,6 @@
             <a class="nav-link <?= active('C_Pelanggan') ?>" href="<?= base_url('C_Pelanggan') ?>">Pelanggan</a>
           </li>
           <li class="nav-item ml-3">
-            <a class="nav-link <?= active('C_Paket') ?>" href="<?= base_url('C_Paket') ?>">Paket</a>
-          </li>
-          <li class="nav-item ml-3">
             <a class="nav-link <?= active('C_Transaksi') ?>" href="<?= base_url('C_Transaksi') ?>">Transaksi</a>
           </li>
           <li class="nav-item ml-3">
@@ -39,6 +36,9 @@
           </li>
           <li class="nav-item ml-3">
             <a class="nav-link <?= active('C_Riwayat') ?>" href="<?= base_url('C_Riwayat') ?>">Riwayat</a>
+          </li>
+          <li class="nav-item ml-3">
+            <a class="nav-link <?= active('C_Paket') ?>" href="<?= base_url('C_Paket') ?>">Paket</a>
           </li>
           <li class="nav-item ml-3">
             <a class="nav-link <?= active('C_User') ?>" href="<?= base_url('C_User') ?>">User</a>
@@ -46,34 +46,27 @@
           <li class="nav-item ml-3">
             <a class="nav-link <?= active('C_Outlet') ?>" href="<?= base_url('C_Outlet') ?>">Outlet</a>
           </li>
-          <li class="nav-item ml-3">
-            <a class="nav-link <?= active('C_Outlet') ?>" href="<?= base_url('C_Paket/tampil') ?>">Data Paket</a>
-          </li>
         <?php endif ?>
-
-        <!-- jika kasir login -->
         <?php if ($this->session->userdata('level') == 'kasir') : ?>
           <li class="nav-item ml-5">
             <a class="nav-link <?= active('C_Pelanggan') ?>" href="<?= base_url('C_Pelanggan') ?>">Pelanggan</a>
           </li>
           <li class="nav-item ml-3">
-            <a class="nav-link <?= active('C_Paket') ?>" href="<?= base_url('C_Paket') ?>">Paket</a>
+            <a class="nav-link <?= active('C_Transaksi') ?>" href="<?= base_url('C_Transaksi') ?>">Transaksi</a>
           </li>
           <li class="nav-item ml-3">
-            <a class="nav-link <?= active('C_Transaksi') ?>" href="<?= base_url('C_Transaksi') ?>">Transaksi</a>
+            <a class="nav-link <?= active('C_Laporan') ?>" href="<?= base_url('C_Laporan') ?>">Laporan</a>
           </li>
           <li class="nav-item ml-3">
             <a class="nav-link <?= active('C_Riwayat') ?>" href="<?= base_url('C_Riwayat') ?>">Riwayat</a>
           </li>
+        <?php endif ?>
+        <?php if ($this->session->userdata('level') == 'owner') : ?>
           <li class="nav-item ml-3">
             <a class="nav-link <?= active('C_Laporan') ?>" href="<?= base_url('C_Laporan') ?>">Laporan</a>
           </li>
-        <?php endif ?>
-
-        <!-- jika owner login -->
-        <?php if ($this->session->userdata('level') == 'owner') : ?>
-          <li class="nav-item ml-5">
-            <a class="nav-link <?= active('C_Laporan') ?>" href="<?= base_url('C_Laporan') ?>">Laporan</a>
+          <li class="nav-item ml-3">
+            <a class="nav-link <?= active('C_Riwayat') ?>" href="<?= base_url('C_Riwayat') ?>">Riwayat</a>
           </li>
         <?php endif ?>
       </ul>

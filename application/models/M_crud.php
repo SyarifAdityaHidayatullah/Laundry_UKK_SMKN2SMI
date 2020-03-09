@@ -39,7 +39,18 @@ class M_crud extends CI_Model
             ->from('transaksi')
             ->join('pelanggan', 'pelanggan.id_pelanggan=transaksi.id_pelanggan', 'left')
             ->join('user', 'user.id_user=transaksi.id_user', 'left')
-            ->join('outlet', 'outlet.id_outlet=transaksi.id_outlet', 'left')
+            ->join('outlet', 'outlet.id_outlet=transaksi.outlet_id', 'left')
+            ->get();
+        return $query->result();
+    }
+    public function join4_where($where)
+    {
+        $query = $this->db->select('*')
+            ->from('transaksi')
+            ->where($where)
+            ->join('pelanggan', 'pelanggan.id_pelanggan=transaksi.id_pelanggan', 'left')
+            ->join('user', 'user.id_user=transaksi.id_user', 'left')
+            ->join('outlet', 'outlet.id_outlet=transaksi.outlet_id', 'left')
             ->get();
         return $query->result();
     }
@@ -47,9 +58,9 @@ class M_crud extends CI_Model
     {
         $query = $this->db->select('*')
             ->from('detail_transaksi')
-            ->where('id_transak', $id)
+            ->where('transaksi_id', $id)
             ->join('paket', 'paket.id_paket=detail_transaksi.id_paket', 'left')
-            ->join('transaksi', 'transaksi.id_transaksi=detail_transaksi.id_transak', 'left')
+            ->join('transaksi', 'transaksi.id_transaksi=detail_transaksi.transaksi_id', 'left')
             ->get();
         return $query->result();
     }
