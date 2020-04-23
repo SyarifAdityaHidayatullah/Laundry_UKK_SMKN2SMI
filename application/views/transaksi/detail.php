@@ -1,5 +1,10 @@
 <div class="container">
     <h3 class="text-center mt-3"><?= $judul; ?></h3>
+    <?php if ($this->session->flashdata()) : ?>
+        <div class="alert alert-success mt-3">
+            <?= $this->session->flashdata('pesan'); ?>
+        </div>
+    <?php endif ?>
     <div class="card">
         <div class="card-header bg-info text-white">
             <h4>Data Pelanggan</h4>
@@ -42,10 +47,11 @@
         <?php
         $no = 1;
         foreach ($detail as $d) :
+            $biaya = $d->biaya_tambahan;
             $totalharga = $d->harga * $d->qty;
             $diskon = $d->diskon * $totalharga / 100;
             $pajak = $d->pajak * $totalharga / 100;
-            $total[] = $totalharga - $diskon + $pajak;
+            $total[] = $totalharga - $diskon + $pajak + $biaya;
         ?>
             <tr>
                 <td><?= $no++; ?></td>
@@ -54,7 +60,7 @@
                 <td><?= $d->qty; ?></td>
                 <td><?= 'Rp ' . number_format($totalharga, 0, '.', '.') ?></td>
             </tr>
-        <?php endforeach; ?>
+        <?php endforeach ?>
         <tr>
             <td colspan="4">Pajak</td>
             <td><?= $d->pajak . " %" ?></td>
@@ -64,16 +70,21 @@
             <td><?= $d->diskon . " %" ?></td>
         </tr>
         <tr>
+            <td colspan="4">Biaya Tambahan</td>
+            <td><?= 'Rp. ' . number_format($d->biaya_tambahan, 0, '.', '.') ?></td>
+        </tr>
+        <tr>
             <td colspan="4">Total</td>
             <td><?= 'Rp ' . number_format(array_sum($total), 0, '.', '.') ?></td>
         </tr>
     </table>
     <div class="form-inline mb-5">
-        <a class="btn btn-danger ml-auto mr-3" href="<?= base_url('C_Laporan') ?>">Kembali</a>
-        <?php if ($d->dibayar == 'dibayar') : ?>
-            <a class="btn btn-success" href="<?= base_url('C_Laporan/cetak/') . $d->transaksi_id ?>">Cetak Bon</a>
-        <?php else : ?>
-            <a class="btn btn-success" href="<?= base_url('C_Laporan/bayar/') . $d->transaksi_id ?>">Bayar</a>
+        <a class="btn btn-outline-danger ml-auto mr-3" href="<?= base_url('C_Transaksi/data_transaksi') ?>">Kembali</a>
+        <?php if ($d->dibayar == 'belum_dibayar') : ?>
+            <a onclick="return confirm('apa anda yakin barang akan dibayar?')" class="btn btn-outline-primary" href="<?= base_url('C_Transaksi/bayar/') . $d->id_transaksi ?>">Bayar</a>
+        <?php endif ?>
+        <?php if ($d->status == 'selesai' && $d->dibayar == 'dibayar') : ?>
+            <a onclick="return confirm('apa anda yakin barang akan diambil?')" class="btn btn-outline-primary" href="<?= base_url('C_Transaksi/ambil/') . $d->id_transaksi ?>">Ambil</a>
         <?php endif ?>
     </div>
 </div>

@@ -23,13 +23,21 @@ class M_crud extends CI_Model
     {
         return $this->db->delete($nama_table, [$idkey => $id]);
     }
-    public function tampiljoin($tableawal, $tablekedua, $idgabung, $idutama)
+    public function tampiljoin($tableawal, $tablekedua, $idgabung)
     {
         // SELECT * LEFT JOIN `user` ON `transaksi`.`id_user`=`user`.`id_user` ORDER BY `id_transaksi` DESC
         $query = $this->db->select('*')
             ->from($tableawal)
-            ->join($tablekedua, '' . $tableawal . '.' . $idgabung . '=' . $tablekedua . '.' . $idgabung . '', 'left')
-            // ->order_by($idutama, 'DESC')
+            ->join($tablekedua, '' . $tablekedua . '.' . $idgabung . '=' . $tableawal . '.' . $idgabung . '', 'left')
+            ->get();
+        return $query->result();
+    }
+    public function tampiljoin_where($tableawal, $tablekedua,  $idgabung, $where)
+    {
+        $query = $this->db->select('*')
+            ->from($tableawal)
+            ->where($where)
+            ->join($tablekedua, '' . $tablekedua . '.' . $idgabung . '=' . $tableawal . '.' . $idgabung . '', 'left')
             ->get();
         return $query->result();
     }
@@ -39,7 +47,7 @@ class M_crud extends CI_Model
             ->from('transaksi')
             ->join('pelanggan', 'pelanggan.id_pelanggan=transaksi.id_pelanggan', 'left')
             ->join('user', 'user.id_user=transaksi.id_user', 'left')
-            ->join('outlet', 'outlet.id_outlet=transaksi.outlet_id', 'left')
+            ->join('outlet', 'outlet.id_outlet=transaksi.id_outlet', 'left')
             ->get();
         return $query->result();
     }
@@ -50,7 +58,7 @@ class M_crud extends CI_Model
             ->where($where)
             ->join('pelanggan', 'pelanggan.id_pelanggan=transaksi.id_pelanggan', 'left')
             ->join('user', 'user.id_user=transaksi.id_user', 'left')
-            ->join('outlet', 'outlet.id_outlet=transaksi.outlet_id', 'left')
+            ->join('outlet', 'outlet.id_outlet=transaksi.id_outlet', 'left')
             ->get();
         return $query->result();
     }
@@ -58,17 +66,20 @@ class M_crud extends CI_Model
     {
         $query = $this->db->select('*')
             ->from('detail_transaksi')
-            ->where('transaksi_id', $id)
+            ->where('detail_transaksi.id_transaksi', $id)
             ->join('paket', 'paket.id_paket=detail_transaksi.id_paket', 'left')
-            ->join('transaksi', 'transaksi.id_transaksi=detail_transaksi.transaksi_id', 'left')
-            ->get();
-        return $query->result();
+            ->join('transaksi', 'transaksi.id_transaksi=detail_transaksi.id_transaksi', 'left')
+            ->get()->result();
+        return $query;
     }
-    public function autocomplete($title)
+    public function search($table, $where, $field1, $field2, $field3, $key)
     {
-        $this->db->like('nama', $title);
-        $this->db->or_like('alamat', $title);
-        $this->db->or_like('no_hp', $title);
-        return $this->db->get('pelanggan')->result();
+        $this->db->select('*');
+        $this->db->from($table);
+        $this->db->where($where);
+        $this->db->like($field1, $key);
+        $this->db->or_like($field2, $key);
+        $this->db->or_like($field3, $key);
+        return $this->db->get()->result();
     }
 }

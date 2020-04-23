@@ -1,57 +1,95 @@
 <div class="container">
     <h3 class="text-center mt-3"><?= $judul; ?></h3>
-    <?php if ($this->session->flashdata()) : ?>
+    <?php if ($this->session->flashdata()) :  ?>
         <div class="alert alert-success mt-3">
             <?= $this->session->flashdata('pesan'); ?>
         </div>
     <?php endif ?>
+    <form id="form" action="" method="POST">
+        <input type="hidden" name="<?= csrf()['name'] ?>" value="<?= csrf()['hash']; ?>">
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Tanggal Awal</label>
+                        <input id="min" type="date" class="form-control" name="tgl_awal">
+                        <?= form_error('tgl_awal', '<div class="text-danger">', '</div>') ?>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Tanggal Akhir</label>
+                        <input id="max" type="date" class="form-control" name="tgl_akhir">
+                        <?= form_error('tgl_akhir', '<div class="text-danger">', '</div>') ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline-primary btn-sm" id="cari">Cari</button>
+                        <button type="submit" class="btn btn-outline-danger btn-sm" id="pdf">Pdf</button>
+                        <button type="submit" class="btn btn-outline-success btn-sm" id="excel">Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     <table class="table table-bordered mt-3" id="data">
-        <thead class="bg-info text-white">
+        <thead class=" text-black" style="background-color: #e3f2fd;">
             <tr>
                 <td>No</td>
-                <td>tanggal</td>
-                <td>Kode invoice</td>
                 <td>Nama Pelanggan</td>
-                <td>Nama kasir</td>
+                <td>Tanggal Transaksi</td>
+                <td>Tanggal Bayar</td>
+                <td>Batas Waktu</td>
+                <td>Kode Invoice</td>
                 <?php if ($this->session->userdata('level') == 'admin') : ?>
                     <td>Outlet</td>
                 <?php endif ?>
                 <td>Status Cucian</td>
-                <td>Status Pembayaran</td>
-                <td>Aksi</td>
+                <td>Total Harga</td>
             </tr>
         </thead>
+
         <?php
         $no = 1;
-        foreach ($laporan as $l) :
+        $a = 0;
+        foreach ($laporan as $t) :
         ?>
             <tr>
                 <td><?= $no++; ?></td>
-                <td><?= $l->tgl; ?></td>
-                <td><?= $l->kode_invoice; ?></td>
-                <td><?= $l->nama; ?></td>
-                <td><?= $l->nama_user; ?></td>
+                <td><?= $t->nama; ?></td>
+                <td><?= $t->tgl; ?></td>
+                <td><?= $t->tgl_bayar; ?></td>
+                <td><?= $t->batas_waktu; ?></td>
+                <td><?= $t->kode_invoice; ?></td>
                 <?php if ($this->session->userdata('level') == 'admin') : ?>
-                    <td><?= $l->nama_outlet; ?></td>
+                    <td><?= $t->nama_outlet; ?></td>
                 <?php endif ?>
-                <td><?= $l->status; ?></td>
-                <?php if ($l->dibayar == 'belum_dibayar') : ?>
-                    <td>
-                        <a href="" class="badge badge-danger">Belum dibayar</a>
-                    </td>
-                <?php else : ?>
-                    <td>
-                        <a href="" class="badge badge-success">dibayar</a>
-                    </td>
-                <?php endif ?>
-                <td>
-                    <a target="_blank" href="<?= base_url('C_Laporan/detail/' . $l->id_transaksi) ?>" class="badge badge-primary">Detail</a>
-                    <a target="_blank" href="<?= base_url('C_Laporan/cetak/' . $l->id_transaksi) ?>" class="badge badge-warning" target="_blank">Cetak invoice</a>
-                    <a href="<?= base_url('C_Outlet/formeditoutlet/' . $l->id_outlet) ?>" class="badge badge-primary">Edit</a>
-                    <a href="<?= base_url('C_Outlet/hapusoutlet/' . $l->id_outlet) ?>" onclick="return confirm('apa anda yakin? data dihapus?')" class="badge badge-danger">Hapus</a>
-                </td>
+                <td><?= $t->status; ?></td>
+                <td><?= 'Rp ' . number_format($t->total_harga, 0, '.', '.'); ?></td>
             </tr>
-        <?php endforeach;
+        <?php $a = $a + $t->total_harga;
+        endforeach;
         ?>
     </table>
+    <label><b>Total Pemasukan adalah Rp. <?= number_format($a, 0, ',', '.') ?></b></label>
 </div>
+<script>
+    $('#cari').click(function() {
+        $('#form').attr('action', "<?= base_url('C_Laporan/cari') ?>");
+        $('#form').submit();
+    });
+    $('#pdf').click(function() {
+        $('#form').attr('action', "<?= base_url('C_Laporan/pdf') ?>");
+        $('#form').submit();
+    });
+    $('#excel').click(function() {
+        $('#form').attr('action', "<?= base_url('C_Laporan/excel') ?>");
+        $('#form').submit();
+    });
+</script>

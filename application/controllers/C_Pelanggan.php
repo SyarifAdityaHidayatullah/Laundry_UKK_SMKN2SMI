@@ -15,8 +15,12 @@ class C_Pelanggan extends CI_Controller
     }
     public function index()
     {
-        $data['judul'] = 'Data Pelanggan';
-        $data['pelanggan'] = $this->M_crud->tampildata('pelanggan');
+        $data['judul'] = 'Data Member #LaundryAja';
+        if ($this->session->userdata('level') == 'admin') {
+            $data['pelanggan'] = $this->M_crud->tampiljoin('pelanggan', 'outlet', 'id_outlet');
+        } else {
+            $data['pelanggan'] = $this->M_crud->tampiljoin_where('pelanggan', 'outlet', 'id_outlet', ['pelanggan.id_outlet' => $this->session->userdata('id_outlet')]);
+        }
         $this->load->view('layout/header', $data);
         $this->load->view('pelanggan/index', $data);
         $this->load->view('layout/footer');
@@ -43,7 +47,7 @@ class C_Pelanggan extends CI_Controller
         ]);
 
         if ($this->form_validation->run() == FALSE) {
-            $data['judul'] = 'Form Tambah Pelanggan';
+            $data['judul'] = 'Form Tambah Member';
             $this->load->view('layout/header', $data);
             $this->load->view('pelanggan/formtambah', $data);
             $this->load->view('layout/footer');
@@ -54,13 +58,14 @@ class C_Pelanggan extends CI_Controller
             $jk = htmlspecialchars($this->input->post('jk', true), ENT_QUOTES);
 
             $data = [
+                'id_outlet' => $this->session->userdata('id_outlet'),
                 'nama' => $nama,
                 'alamat' => $alamat,
                 'no_hp' => $no_hp,
                 'jk' => $jk
             ];
             $this->M_crud->tambahdata('pelanggan', $data);
-            $this->session->set_flashdata('pesan', 'Data Berhasil Ditambah');
+            $this->session->set_flashdata('pesanberhasil', 'Data Berhasil Ditambah');
             redirect('C_Pelanggan');
         }
     }
@@ -85,7 +90,7 @@ class C_Pelanggan extends CI_Controller
         ]);
 
         if ($this->form_validation->run() == FALSE) {
-            $data['judul'] = 'Form Edit Pelanggan';
+            $data['judul'] = 'Form Edit Member';
             $data['pelanggan'] = $this->M_crud->formeditdata('pelanggan', 'id_pelanggan', $id);
             if ($data['pelanggan']->id_pelanggan) {
                 $this->load->view('layout/header', $data);

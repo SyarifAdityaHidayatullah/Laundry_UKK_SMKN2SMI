@@ -1,13 +1,13 @@
 <div class="container">
     <h3 class="text-center mt-3"><?= $judul; ?></h3>
-    <a href="<?= base_url('C_Outlet/formtambahoutlet') ?>" class="btn btn-success mt-3 mb-3">Tambah</a>
+    <a href="<?= base_url('C_Outlet/formtambahoutlet') ?>" class="btn btn-outline-success mt-3 mb-3">Tambah</a>
     <?php if ($this->session->flashdata()) : ?>
         <div class="alert alert-success mt-3">
             <?= $this->session->flashdata('pesan'); ?>
         </div>
     <?php endif ?>
     <table class="table table-bordered mt-3" id="data">
-        <thead class="bg-info text-white">
+        <thead class="text-black" style="background-color: #e3f2fd;">
             <tr>
                 <td>No</td>
                 <td>Nama</td>
@@ -26,8 +26,8 @@
                 <td><?= $o->alamat_outlet; ?></td>
                 <td><?= $o->tlp; ?></td>
                 <td>
-                    <a href="<?= base_url('C_Outlet/formeditoutlet/' . $o->id_outlet) ?>" class="badge badge-primary">Edit</a>
-                    <a href="<?= base_url('C_Outlet/hapusoutlet/' . $o->id_outlet) ?>" onclick="return confirm('apa anda yakin? data dihapus?')" class="badge badge-danger">Hapus</a>
+                    <a href="<?= base_url('C_Outlet/formeditoutlet/' . $o->id_outlet) ?>" class="btn btn-outline-primary btn-sm">Edit</a>
+                    <a href="<?= base_url('C_Outlet/hapusoutlet/' . $o->id_outlet) ?>" onclick="return confirm('anda yakin akan menghapus data outlet ini')" class="btn btn-outline-danger btn-sm">Hapus</a>
                 </td>
             </tr>
         <?php endforeach ?>

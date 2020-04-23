@@ -16,8 +16,8 @@ class C_Paket extends CI_Controller
     }
     public function index()
     {
-        $data['judul'] = 'Data Paket';
-        $data['paket'] = $this->M_crud->tampiljoin('outlet', 'paket', 'id_outlet', 'id_paket');
+        $data['judul'] = 'Data Paket #LaundryAja';
+        $data['paket'] = $this->M_crud->tampiljoin('paket', 'outlet', 'id_outlet');
         $this->load->view('layout/header', $data);
         $this->load->view('paket/admin/index', $data);
         $this->load->view('layout/footer');
@@ -89,9 +89,14 @@ class C_Paket extends CI_Controller
             $data['jenis'] = ['kiloan', 'selimut', 'bed_cover', 'kaos', 'lain'];
             $data['outlet'] =  $this->M_crud->tampildata('outlet');
             $data['paket'] =  $this->M_crud->formeditdata('paket', 'id_paket', $id);
-            $this->load->view('layout/header', $data);
-            $this->load->view('paket/admin/formedit', $data);
-            $this->load->view('layout/footer');
+            if ($data['paket']->id_paket) {
+                $this->load->view('layout/header', $data);
+                $this->load->view('paket/admin/formedit', $data);
+                $this->load->view('layout/footer');
+            } else {
+                $this->session->set_flashdata('pesan', 'ID Tidak Ditemukan');
+                redirect('C_Paket');
+            }
         } else {
             $nama = htmlspecialchars($this->input->post('nama_paket'));
             $harga = htmlspecialchars($this->input->post('harga'));

@@ -1,0 +1,13 @@
+== #LaundryAja ==
+
+== Admin login ==
+    Username : admin
+    Password : admin
+
+== Kasir login ==
+    Username : kasir
+    Password : kasir
+
+== Owner login ==
+    Username : owner
+    Password : owner

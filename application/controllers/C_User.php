@@ -18,8 +18,8 @@ class C_User extends CI_Controller
     }
     public function index()
     {
-        $data['judul'] = 'Data User';
-        $data['user'] = $this->M_crud->tampiljoin('outlet', 'user', 'id_outlet', 'id_user');
+        $data['judul'] = 'Data User #LaundryAja';
+        $data['user'] = $this->M_crud->tampiljoin('user', 'outlet', 'id_outlet');
         $this->load->view('layout/header', $data);
         $this->load->view('user/index', $data);
         $this->load->view('layout/footer');
@@ -134,7 +134,7 @@ class C_User extends CI_Controller
     public function resetpass($id)
     {
         $data = [
-            'password' => password_hash('123', PASSWORD_DEFAULT)
+            'password' => password_hash('randompassword', PASSWORD_DEFAULT)
         ];
         $this->M_crud->editdata('user', 'id_user', $id, $data);
         $this->session->set_flashdata('pesan', 'Password User Berhasil Direset');

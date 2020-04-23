@@ -34,8 +34,8 @@
                             <input type="number" name="no_hp" placeholder="Masukkan No HP" value="<?= set_value('no_hp') ?>" class="form-control">
                             <?= form_error('no_hp', '<div class="text-danger">', '</div>') ?>
                         </div>
-                        <a href="<?= base_url('C_Pelanggan') ?>" class="btn btn-success">Kembali</a>
-                        <button type="submit" class="btn btn-primary mr-auto">Tambah</button>
+                        <a href="<?= base_url('C_Pelanggan') ?>" class="btn btn-outline-success">Kembali</a>
+                        <button type="submit" class="btn btn-outline-primary mr-auto">Tambah</button>
                     </form>
                 </div>
             </div>

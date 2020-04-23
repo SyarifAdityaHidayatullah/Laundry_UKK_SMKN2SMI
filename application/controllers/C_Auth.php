@@ -21,7 +21,7 @@ class C_auth extends CI_Controller
 		]);
 
 		if ($this->form_validation->run() == FALSE) {
-			$this->load->view('v_index');
+			$this->load->view('login');
 		} else {
 			$username = htmlspecialchars($this->input->post('username', true), ENT_QUOTES);
 			$password = htmlspecialchars($this->input->post('password', true), ENT_QUOTES);
@@ -43,11 +43,11 @@ class C_auth extends CI_Controller
 						redirect('C_Pelanggan');
 					}
 				} else {
-					$this->session->set_flashdata('pesan', 'password salah!!!');
+					$this->session->set_flashdata('pesan', 'password anda salah!!!');
 					redirect('C_Auth');
 				}
 			} else {
-				$this->session->set_flashdata('pesan', 'username tidak terdaftar!!!');
+				$this->session->set_flashdata('pesan', 'username anda belum terdaftar!!!');
 				redirect('C_Auth');
 			}
 		}

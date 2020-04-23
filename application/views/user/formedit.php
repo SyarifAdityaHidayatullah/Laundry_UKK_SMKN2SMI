@@ -43,8 +43,8 @@
                             </select>
                             <?= form_error('level', '<div class="text-danger">', '</div>') ?>
                         </div>
-                        <a href="<?= base_url('C_User') ?>" class="btn btn-success">Kembali</a>
-                        <button type="submit" class="btn btn-primary mr-auto">Edit</button>
+                        <a href="<?= base_url('C_User') ?>" class="btn btn-outline-success">Kembali</a>
+                        <button type="submit" class="btn btn-outline-primary mr-auto">Simpan</button>
                     </form>
                 </div>
             </div>
